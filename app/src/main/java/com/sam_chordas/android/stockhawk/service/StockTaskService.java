@@ -53,6 +53,7 @@ public class StockTaskService extends GcmTaskService{
     if (mContext == null){
       mContext = this;
     }
+
     StringBuilder urlStringBuilder = new StringBuilder();
     try{
       // Base URL for the Yahoo query
@@ -130,8 +131,6 @@ public class StockTaskService extends GcmTaskService{
         e.printStackTrace();
       }
     }
-
     return result;
   }
-
 }
