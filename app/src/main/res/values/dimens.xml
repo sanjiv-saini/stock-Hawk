@@ -9,4 +9,9 @@
 
     <dimen name="widget_default_height">110dp</dimen>
     <dimen name="widget_default_width">110dp</dimen>
+
+    <dimen name="widget_collection_default_width">250dp</dimen>
+    <dimen name="widget_collection_default_height">180dp</dimen>
+    <dimen name="widget_collection_min_resize_width">220dp</dimen>
+    <dimen name="widget_collection_min_resize_height">@dimen/widget_collection_default_height</dimen>
 </resources>
