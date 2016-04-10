@@ -94,18 +94,11 @@ public class LineGraphActivity extends AppCompatActivity {
                 if(data != null){
 
                     if(data.query != null) {
-                        Log.d(LOG_TAG, "Query is not null: ");
-
                         if (data.query.results != null) {
-                            Log.d(LOG_TAG, "Results is not null: ");
-
                             if (data.query.results.quote != null) {
-                                Log.d(LOG_TAG, "Quote is not null: ");
 
                                 quoteArray = data.query.results.quote;
-                                // returned array is in latest to old order.
                                 Collections.reverse(quoteArray);
-                                Log.d(LOG_TAG, "Quote data: symbol: "+quoteArray.get(0).symbol+" date: "+ quoteArray.get(0).quote_date +" bidprice: "+quoteArray.get(0).close);
 
                                 if (quoteArray.size() > 0) {
                                     lineView.setVisibility(View.VISIBLE);

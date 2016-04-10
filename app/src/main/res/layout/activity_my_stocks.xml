@@ -10,7 +10,7 @@
       android:id="@+id/recycler_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:contentDescription="stock quote list. click quote to launch graph"
+      android:contentDescription="@string/quote_list_description"
       />
 
   <TextView
@@ -21,15 +21,15 @@
       android:fontFamily="sans-serif-condensed"
       android:textAppearance="?android:textAppearanceLarge"
       android:visibility="gone"
-      android:text="@string/empty_list"/>
+      android:text="@string/offline_empty_list"/>
 
   <com.melnykov.fab.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right|end"
-      android:layout_margin="16dp"
-      android:contentDescription="add quote"
+      android:layout_margin="@dimen/activity_horizontal_margin"
+      android:contentDescription="@string/fab_button_description"
       android:src="@drawable/ic_add_white_24dp"
       fab:fab_colorNormal="@color/material_blue_500"
       fab:fab_colorPressed="@color/material_blue_600"
@@ -37,6 +37,6 @@
       fab:fab_shadow="true"
       fab:fab_type="normal"
       fab:layout_anchor="recycler_view"
-      fab:layout_anchorGravity="bottom | end"
+      fab:layout_anchorGravity="bottom | end|right"
       />
 </FrameLayout>

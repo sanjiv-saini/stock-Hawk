@@ -118,7 +118,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                       new String[] { symbolInput }, null);
                   if (c.getCount() != 0) {
                     Toast toast =
-                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                        Toast.makeText(MyStocksActivity.this, getString(R.string.readd_toast),
                             Toast.LENGTH_LONG);
                     toast.show();
                     return;
@@ -234,7 +234,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         long lastUpdated = preferences.getLong("lastUpdated", System.currentTimeMillis());
         if((System.currentTimeMillis() - lastUpdated) > 3600000L){
-          Toast.makeText(mContext, "Data out of date. connect internet !!", Toast.LENGTH_SHORT).show();
+          Toast.makeText(mContext, getString(R.string.outdated_data_toast), Toast.LENGTH_SHORT).show();
         } else {
           networkToast();
         }

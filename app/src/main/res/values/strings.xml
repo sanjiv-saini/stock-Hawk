@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
+    <string name="app_name" translatable="false">Stock Hawk</string>
 
     <string name="action_example">Example action</string>
 
@@ -7,18 +7,25 @@
     <string name="action_change_units">Change Units</string>
     <string name="symbol_search">Symbol Search</string>
     <string name="content_test">Search for a Stock Symbol</string>
-    <string name="input_hint">FB</string>
+    <string name="input_hint" translatable="false">FB</string>
     <string name="input_prefill"></string>
     <string name="widget_title">Today\'s Market</string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
 
-    <string name="empty_list">Empty list.\n Connect to internet!!</string>
+    <string name="offline_empty_list">Empty list.\n Connect to internet!!</string>
+    <string name="empty_list">Empty list</string>
+
     <string name="spinner_title">Select Range</string>
 
     <string name="non_existent_stock">Stock symbol not exist!!</string>
 
-    <string name="one_month">1 Month</string>
-    <string name="six_month">6 Month</string>
-    <string name="one_year">1 Year</string>
+    <string name="one_month" translatable="false">1 Month</string>
+    <string name="six_month" translatable="false">6 Month</string>
+    <string name="one_year" translatable="false">1 Year</string>
+    <string name="graph_description">Displaying graph of stock’s value over time</string>
+    <string name="quote_list_description">stock quote list. click quote to launch graph</string>
+    <string name="fab_button_description">add quote</string>
+    <string name="outdated_data_toast">Data out of date. connect internet !!</string>
+    <string name="readd_toast">This stock is already saved!!</string>
 
 </resources>

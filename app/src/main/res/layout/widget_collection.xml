@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
-            android:contentDescription="stock quote list. click quote to launch graph."
+            android:contentDescription="@string/quote_list_description"
             tools:listitem="@layout/widget_collection_item"/>
         <TextView
             android:id="@+id/widget_empty"
