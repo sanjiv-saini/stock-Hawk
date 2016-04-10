@@ -12,8 +12,13 @@
     <string name="widget_title">Today\'s Market</string>
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
 
-    <string name="empty_list">Empty list</string>
+    <string name="empty_list">Empty list.\n Connect to internet!!</string>
+    <string name="spinner_title">Select Range</string>
 
     <string name="non_existent_stock">Stock symbol not exist!!</string>
+
+    <string name="one_month">1 Month</string>
+    <string name="six_month">6 Month</string>
+    <string name="one_year">1 Year</string>
 
 </resources>

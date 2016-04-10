@@ -3,9 +3,11 @@ package com.sam_chordas.android.stockhawk.service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -127,6 +129,10 @@ public class StockTaskService extends GcmTaskService{
           mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
               Utils.quoteJsonToContentVals(getResponse));
           Utils.updateWidgets(mContext);
+          SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+          SharedPreferences.Editor editor = preferences.edit();
+          editor.putLong("lastUpdated", System.currentTimeMillis());
+          editor.commit();
         }catch (RemoteException | OperationApplicationException e){
           Log.e(LOG_TAG, "Error applying batch insert", e);
         }

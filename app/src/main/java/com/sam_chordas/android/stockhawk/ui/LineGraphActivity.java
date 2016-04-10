@@ -4,17 +4,24 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.db.chart.model.LineSet;
 import com.db.chart.model.Point;
+import com.db.chart.view.AxisController;
 import com.db.chart.view.ChartView;
 import com.db.chart.view.LineChartView;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.rest.CustomSpinnerAdapter;
 import com.sam_chordas.android.stockhawk.retrofit.ApiService;
 import com.sam_chordas.android.stockhawk.retrofit.RestClient;
 import com.sam_chordas.android.stockhawk.retrofit.model.Quote;
@@ -39,6 +46,8 @@ public class LineGraphActivity extends AppCompatActivity {
     ArrayList<Quote> quoteArray = null;
     public String symbol;
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    SimpleDateFormat dateFormat;
+    Calendar cal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +58,12 @@ public class LineGraphActivity extends AppCompatActivity {
 
         setTitle(symbol);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+        dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         String endDate = dateFormat.format(System.currentTimeMillis());
 
-        Calendar cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.DATE, -30);
+        cal.add(Calendar.MONTH, -1);
         String startDate = dateFormat.format(cal.getTimeInMillis());
 
         fetchQuoteHistoryData(symbol, startDate, endDate);
@@ -124,32 +133,6 @@ public class LineGraphActivity extends AppCompatActivity {
     }
 
     public void displayGraph() {
-        /* LineSet dataset = new LineSet();
-        dataset.addPoint(new Point("1", 5.5f));
-        dataset.addPoint(new Point("2", 15.5f));
-        dataset.addPoint(new Point("3", 25.5f));
-        dataset.addPoint(new Point("4", 35.5f));
-        dataset.addPoint(new Point("5", 25.5f));
-        dataset.addPoint(new Point("6", 5.5f));
-        dataset.addPoint(new Point("7", 15.5f));
-
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-
-
-        lineView = (LineChartView) findViewById(R.id.linechart);
-
-        dataset.setDotsColor(getResources().getColor(R.color.material_red_700));
-        dataset.setColor(getResources().getColor(R.color.material_green_700));
-
-        lineView.setAxisBorderValues((int) 5.5 - 2, (int) 35.5 + 2);
-        lineView.setAxisColor(Color.WHITE);
-        lineView.setLabelsColor(Color.WHITE);
-        lineView.setStep(1);
-        lineView.setGrid(ChartView.GridType.FULL, paint);
-        lineView.addData(dataset);
-        lineView.show();
-    */
 
         LineSet dataset = new LineSet();
         double minValue = 0;
@@ -183,14 +166,81 @@ public class LineGraphActivity extends AppCompatActivity {
             dataset.setDotsColor(getResources().getColor(R.color.material_red_700));
             dataset.setColor(getResources().getColor(R.color.material_green_700));
 
+            dataset.setDotsRadius(8.0f);
+            dataset.setThickness(7.0f);
+
+
             lineView.dismiss();
             lineView.addData(dataset);
             lineView.setAxisBorderValues((int) minValue - 2, (int) maxValue + 2);
             lineView.setAxisColor(Color.WHITE);
             lineView.setLabelsColor(Color.WHITE);
-            lineView.setStep(1);
+
+            lineView.setStep((int)((maxValue - minValue)/10));
+
+            lineView.setXLabels(AxisController.LabelPosition.NONE);
             lineView.setGrid(ChartView.GridType.FULL, paint);
             lineView.show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.stock_graph, menu);
+
+        MenuItem item = menu.findItem(R.id.spinner);
+        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        ArrayList<String> list = new ArrayList<String>();
+
+        list.add(getString(R.string.one_month));
+        list.add(getString(R.string.six_month));
+        list.add(getString(R.string.one_year));
+
+        CustomSpinnerAdapter spinAdapter = new CustomSpinnerAdapter(getApplicationContext(), list);
+        spinner.setAdapter(spinAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapter, View v,
+                                       int position, long id) {
+
+                String endDate = dateFormat.format(System.currentTimeMillis());
+                String item = adapter.getItemAtPosition(position).toString();
+                Date date = new Date();
+                String startDate;
+
+                switch (item)
+                {
+                    case "1 Month":
+                        cal.setTime(date);
+                        cal.add(Calendar.MONTH, -1);
+                        startDate = dateFormat.format(cal.getTimeInMillis());
+                        fetchQuoteHistoryData(symbol,startDate, endDate);
+                        break;
+                    case "6 Month":
+                        cal.setTime(date);
+                        cal.add(Calendar.MONTH, -6);
+                        startDate = dateFormat.format(cal.getTimeInMillis());
+                        fetchQuoteHistoryData(symbol,startDate, endDate);
+                        break;
+                    case "1 Year":
+                        cal.setTime(date);
+                        cal.add(Calendar.YEAR, -1);
+                        startDate = dateFormat.format(cal.getTimeInMillis());
+                        fetchQuoteHistoryData(symbol,startDate, endDate);
+                        break;
+                }
+             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+        return true;
     }
 }

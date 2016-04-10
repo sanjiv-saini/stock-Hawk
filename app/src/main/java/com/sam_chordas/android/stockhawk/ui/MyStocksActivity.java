@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -52,6 +55,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private Context mContext;
   private Cursor mCursor;
   boolean isConnected;
+  Toast toast;
+  RecyclerView recyclerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +77,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
       mServiceIntent.putExtra("tag", "init");
       if (isConnected){
         startService(mServiceIntent);
-      } else{
-        networkToast();
       }
     }
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+    recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
@@ -95,7 +98,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
-
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.attachToRecyclerView(recyclerView);
@@ -125,6 +127,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     mServiceIntent.putExtra("tag", "add");
                     mServiceIntent.putExtra("symbol", symbolInput);
                     startService(mServiceIntent);
+
                   }
                 }
               })
@@ -170,7 +173,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   }
 
   public void networkToast(){
-    Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
+    toast = Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT);
+    toast.show();
   }
 
   public void restoreActionBar() {
@@ -221,6 +225,21 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
   @Override
   public void onLoadFinished(Loader<Cursor> loader, Cursor data){
+    if (!isConnected){
+      if(data == null || data.getCount() == 0){
+        recyclerView.setVisibility(View.GONE);
+        TextView emptyView = (TextView) findViewById(R.id.empty_view);
+        emptyView.setVisibility(View.VISIBLE);
+      } else{
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        long lastUpdated = preferences.getLong("lastUpdated", System.currentTimeMillis());
+        if((System.currentTimeMillis() - lastUpdated) > 3600000L){
+          Toast.makeText(mContext, "Data out of date. connect internet !!", Toast.LENGTH_SHORT).show();
+        } else {
+          networkToast();
+        }
+      }
+    }
     mCursorAdapter.swapCursor(data);
     mCursor = data;
   }
