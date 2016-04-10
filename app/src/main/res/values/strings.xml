@@ -14,4 +14,6 @@
 
     <string name="empty_list">Empty list</string>
 
+    <string name="non_existent_stock">Stock symbol not exist!!</string>
+
 </resources>
