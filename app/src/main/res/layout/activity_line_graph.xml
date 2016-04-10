@@ -8,12 +8,14 @@
         android:id="@+id/linechart"
         android:layout_width="match_parent"
         android:visibility="gone"
+        android:contentDescription="Displaying graph of stock’s value over time"
         android:layout_height="match_parent" />
 
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
+        android:contentDescription="fetching data"
         android:layout_gravity="center" />
 
 </FrameLayout>

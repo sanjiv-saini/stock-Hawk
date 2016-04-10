@@ -1,10 +1,10 @@
 package com.sam_chordas.android.stockhawk.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -32,7 +32,7 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class LineGraphActivity extends Activity {
+public class LineGraphActivity extends AppCompatActivity {
     LineChartView lineView;
     private final String LOG_TAG = LineGraphActivity.class.getSimpleName();
     private Context context = null;
@@ -46,6 +46,8 @@ public class LineGraphActivity extends Activity {
         setContentView(R.layout.activity_line_graph);
 
         symbol = getIntent().getExtras().getString("symbol");
+
+        setTitle(symbol);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         String endDate = dateFormat.format(System.currentTimeMillis());
